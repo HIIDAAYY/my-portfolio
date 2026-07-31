@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --shell-x: clamp(1.25rem, 5vw, 4rem);
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ink text-paper antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+  }
+
+  /* Fokus keyboard yang terlihat jelas — syarat aksesibilitas Lighthouse */
+  :focus-visible {
+    outline: 2px solid theme("colors.violet.400");
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: theme("colors.violet.600");
+    color: theme("colors.paper");
+  }
+
+  /* Hormati preferensi sistem: matikan seluruh animasi */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell;
+    padding-inline: var(--shell-x);
+  }
+
+  .eyebrow {
+    @apply text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-violet-400;
+  }
+
+  /* Kartu dengan border gradien tipis — dibuat pakai mask, bukan pseudo-gradient berat */
+  .card {
+    @apply relative rounded-2xl bg-ink-700/70 backdrop-blur-[2px];
+    border: 1px solid theme("colors.hairline");
+    transition: border-color 0.4s theme("transitionTimingFunction.snap"),
+      transform 0.4s theme("transitionTimingFunction.snap"),
+      background-color 0.4s theme("transitionTimingFunction.snap");
+  }
+
+  .card:hover {
+    border-color: theme("colors.hairline-strong");
+    background-color: rgb(27 21 48 / 0.75);
+  }
+
+  /* Ambient glow: satu radial-gradient statis, tidak memicu repaint */
+  .glow-ambient::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: radial-gradient(
+      120% 90% at 15% 0%,
+      rgba(139, 92, 246, 0.22),
+      rgba(217, 70, 239, 0.08) 45%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Garis gradien yang mengikuti kursor — variabel diisi oleh useSpotlight */
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(139, 92, 246, 0.16),
+      transparent 62%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full text-sm font-medium;
+    @apply px-6 py-3.5 transition-all duration-300 ease-snap;
+    min-height: 48px; /* target sentuh mobile */
+  }
+
+  .btn-primary {
+    @apply btn bg-violet-500 text-white;
+    box-shadow: 0 10px 34px -12px rgba(139, 92, 246, 0.9);
+  }
+
+  .btn-primary:hover {
+    @apply bg-violet-400;
+    box-shadow: 0 16px 46px -12px rgba(217, 70, 239, 0.85);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    @apply btn text-paper;
+    border: 1px solid theme("colors.hairline-strong");
+  }
+
+  .btn-ghost:hover {
+    @apply bg-violet-500/10;
+    border-color: theme("colors.violet.500");
+    transform: translateY(-2px);
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-400;
+    border: 1px solid theme("colors.hairline");
+  }
+
+  .rule {
+    @apply h-px w-full;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      theme("colors.hairline-strong"),
+      transparent
+    );
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(100deg, #f8fafc 20%, #a78bfa 55%, #e879f9 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .balance {
+    text-wrap: balance;
+  }
+
+  .pretty {
+    text-wrap: pretty;
+  }
+}
