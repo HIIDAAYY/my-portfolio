@@ -9,7 +9,7 @@ export const site = {
     "Website cepat & AI agent cerdas untuk bisnis yang ingin naik kelas.",
   description:
     "Saya membangun website yang cepat dan AI agent yang melayani pelanggan 24/7 untuk bisnis dan UMKM Indonesia. Rapi di HP, terhubung langsung ke WhatsApp.",
-  url: "https://muhammadaditia.com", // ganti dengan domain final
+  url: "https://portfolio-adit-seven.vercel.app", // ganti bila sudah punya domain sendiri
   locale: "id_ID",
 
   contact: {
