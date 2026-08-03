@@ -89,7 +89,7 @@ export const demos: readonly Demo[] = [
       "Estimasi biaya dan durasi tiap tindakan ditampilkan di awal",
       "Tetap berfungsi meski JavaScript dimatikan",
     ],
-    stack: ["HTML semantik", "CSS modern", "Vanilla JS"],
+    stack: ["Astro", "TypeScript", "Vitest"],
     live: "https://klinik-senyum-sehat-blush.vercel.app",
     repo: "https://github.com/HIIDAAYY/Klinik-Gigi-Senyum-Sehat",
     swatch: { bg: "#E4EEF5", fg: "#385F7C", accent: "#6FA0C4" },
@@ -105,7 +105,7 @@ export const demos: readonly Demo[] = [
       "Pesan WhatsApp terisi otomatis dengan nama dan harga menu",
       "Peta lokasi tertanam dan jam buka yang jelas",
     ],
-    stack: ["HTML semantik", "CSS modern", "Vanilla JS"],
+    stack: ["Astro", "TypeScript", "Vitest"],
     live: "https://kopi-senja-brown.vercel.app",
     repo: "https://github.com/HIIDAAYY/kopi-senja",
     swatch: { bg: "#EDE3D6", fg: "#6E4B2C", accent: "#B08154" },
@@ -150,7 +150,7 @@ export const featured = {
     architecture: [
       {
         label: "Alur permintaan",
-        body: "Pesan pengguna masuk lewat Route Handler di App Router, dicocokkan dengan potongan basis pengetahuan yang relevan, lalu dikirim ke model bersama konteks tersebut. Jawaban dialirkan kembali sebagai stream sehingga teks muncul bertahap, bukan menunggu respons penuh.",
+        body: "Pesan pengguna masuk lewat Route Handler di App Router, dicocokkan dengan potongan basis pengetahuan yang relevan lewat pencarian vektor di Pinecone, lalu dikirim ke Claude bersama konteks tersebut. Model dapat memanggil tool — cek ketersediaan jadwal, buat booking, eskalasi ke manusia — dan hasilnya diumpankan balik dalam satu putaran percakapan sampai jawaban final terbentuk.",
       },
       {
         label: "Basis pengetahuan",
@@ -163,8 +163,8 @@ export const featured = {
     ],
     decisions: [
       {
-        label: "Kenapa streaming, bukan tunggu jawaban penuh",
-        body: "Menunggu respons lengkap terasa seperti aplikasi macet. Streaming membuat waktu tunggu terasa jauh lebih singkat meski durasi totalnya sama.",
+        label: "Kenapa multi-tenant sejak awal",
+        body: "Satu codebase melayani banyak klien dengan brand, basis pengetahuan, dan aturan masing-masing. Menambah klien baru berarti menambah data, bukan menyalin dan menempel proyek.",
       },
       {
         label: "Kenapa RAG, bukan menaruh semua data di prompt",
@@ -183,8 +183,9 @@ export const featured = {
       "Next.js (App Router)",
       "TypeScript",
       "Anthropic Claude API",
-      "Retrieval-augmented generation",
-      "Streaming response",
+      "RAG · Pinecone",
+      "Prisma · PostgreSQL",
+      "WhatsApp API (Twilio)",
       "Tailwind CSS",
       "Vercel",
     ],
