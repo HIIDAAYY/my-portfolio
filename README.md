@@ -1,7 +1,8 @@
-# Portofolio — Muhammad Aditia
+# Portofolio Muhammad Aditia
 
-Website portofolio personal. Next.js 15 (App Router), Tailwind CSS 3, Framer Motion.
-Seluruh halaman dirender statis saat build, jadi hosting-nya bisa di mana saja.
+Website portofolio pribadi. Next.js 15 (App Router), Tailwind CSS 3, Framer Motion. Semua halaman dirender statis saat build.
+
+Live: https://portfolio-adit-seven.vercel.app
 
 ## Menjalankan
 
@@ -11,89 +12,31 @@ npm run dev     # http://localhost:3000
 npm run build   # build produksi
 ```
 
-Build terakhir yang diverifikasi: **berhasil, 4 route statis, 139 kB first load JS.**
+Build terakhir: 4 route statis, 139 kB first load JS.
 
-## Struktur file
+## Struktur
 
 ```
-portfolio-adit/
-├─ app/
-│  ├─ layout.tsx        Metadata SEO, Open Graph, JSON-LD, font, skip link
-│  ├─ page.tsx          Merangkai seluruh section
-│  ├─ globals.css       Design token, utility kustom, efek glow
-│  ├─ robots.ts         robots.txt otomatis
-│  └─ sitemap.ts        sitemap.xml otomatis
-├─ components/
-│  ├─ MotionProvider.tsx   LazyMotion — memuat animasi seperlunya saja
-│  ├─ Reveal.tsx           Pembungkus scroll-reveal
-│  ├─ Icons.tsx            Ikon SVG inline (tanpa library)
-│  ├─ Nav.tsx              Navigasi sticky + menu mobile
-│  ├─ Hero.tsx             Headline, CTA, stat strip
-│  ├─ FeaturedProject.tsx  Kartu besar HAI Support Agent
-│  ├─ TechnicalLayer.tsx   Accordion detail teknis
-│  ├─ IndustryDemos.tsx    Grid tiga demo industri
-│  ├─ DemoCard.tsx         Kartu demo + pratinjau live saat hover
-│  ├─ Process.tsx          Empat langkah proses kerja
-│  ├─ FinalCta.tsx         Section penutup
-│  ├─ Footer.tsx           Footer
-│  └─ FloatingWhatsApp.tsx Tombol WA mengambang
-├─ lib/
-│  └─ site.ts           SEMUA teks, tautan, dan data ada di sini
-├─ tailwind.config.ts   Palet ungu, skala tipografi, keyframes
-├─ next.config.mjs      Header keamanan
-└─ tsconfig.json
+app/
+  layout.tsx        metadata SEO, Open Graph, JSON-LD, font
+  page.tsx          susunan section
+  globals.css       design token dan utility
+  robots.ts         robots.txt
+  sitemap.ts        sitemap.xml
+components/         Nav, Hero, FeaturedProject, IndustryDemos, Process, Footer, dll.
+lib/site.ts         semua teks, tautan, dan data
 ```
 
-## Mengubah konten
-
-Hampir semua yang ingin diubah ada di **`lib/site.ts`** — nama, tagline, nomor
-WhatsApp, email, daftar demo, isi case study, dan langkah proses. Komponen membaca
-dari sana, jadi tidak perlu menyentuh JSX.
-
-## Yang perlu Anda lakukan sebelum rilis
-
-1. **`lib/site.ts` → `site.url`** — ganti `https://muhammadaditia.com` dengan domain final.
-   Nilai ini dipakai oleh sitemap, canonical URL, dan Open Graph.
-
-2. **`public/og-image.jpg`** — buat gambar 1200×630 px dan simpan di folder `public/`.
-   Ini yang muncul saat link dibagikan di WhatsApp atau LinkedIn. Belum ada di repo.
-
-3. **Periksa layer teknis HAI Support Agent** — `lib/site.ts` → `featured.technical`.
-   Isinya saya susun berdasarkan pola arsitektur yang umum untuk agent seperti ini.
-   Samakan dengan implementasi Anda yang sebenarnya: kalau tidak memakai embedding,
-   atau memakai database tertentu, tulis apa adanya. Recruiter akan menanyakan ini
-   di wawancara, jadi setiap kalimat harus bisa Anda pertanggungjawabkan.
-
-4. **Angka di stat strip** — `lib/site.ts` → `stats`. Jalankan Lighthouse pada situs
-   ini setelah deploy dan sesuaikan angkanya dengan hasil sebenarnya.
-
-## Deploy
-
-Push ke GitHub, lalu impor repo-nya di Vercel. Tidak ada environment variable yang
-dibutuhkan. Build command dan output directory terdeteksi otomatis.
+Sebagian besar konten (tagline, kontak, daftar demo, case study) diubah dari `lib/site.ts`, tanpa menyentuh komponen.
 
 ## Catatan teknis
 
-**Kenapa `LazyMotion` + `m`, bukan `motion` biasa**
-Mengimpor `motion` menarik seluruh bundel Framer Motion (~40 kB). `LazyMotion` dengan
-`domAnimation` hanya memuat fitur animasi DOM (~15 kB). Mode `strict` memaksa
-penggunaan `m` agar tidak ada impor berat yang tidak sengaja masuk.
+- **LazyMotion + `m`** dipakai supaya hanya fitur animasi DOM yang dimuat (sekitar 15 kB, dibanding sekitar 40 kB untuk `motion` penuh).
+- **Ikon SVG inline**, tanpa paket ikon, karena hanya butuh delapan ikon.
+- **Pratinjau iframe tidak dimuat di mobile** supaya scroll tidak tersendat dan halaman tetap ringan di koneksi seluler. Di mobile hanya tampil thumbnail.
+- **Animasi dimatikan saat `prefers-reduced-motion`**, baik lewat `useReducedMotion` maupun media query.
+- **Tombol CTA membuka WhatsApp dengan pesan yang sudah terisi**, berbeda per konteks, jadi terlihat pengunjung datang dari bagian mana.
 
-**Kenapa ikon ditulis manual sebagai SVG**
-Paket ikon menambah puluhan kilobyte JavaScript untuk sesuatu yang sebenarnya cuma
-path statis. Delapan ikon inline jauh lebih murah.
+## Deploy
 
-**Kenapa iframe pratinjau tidak dimuat di mobile**
-Dua alasan. Pertama, iframe di layar sempit menyandera gerakan scroll pengguna.
-Kedua, memuat tiga situs sekaligus di koneksi seluler merusak waktu muat. Di mobile
-yang tampil hanya thumbnail warna brand — ringan dan tetap informatif.
-
-**Kenapa animasi dimatikan saat `prefers-reduced-motion`**
-Sebagian orang mengalami pusing atau mual karena animasi. `useReducedMotion` dan
-media query di `globals.css` mematikan seluruh gerakan bila pengguna sudah mengatur
-preferensi itu di sistemnya. Ini juga diperiksa oleh audit aksesibilitas Lighthouse.
-
-**Kenapa semua CTA mengarah ke WhatsApp dengan pesan terisi**
-Orang enggan mengetik pesan pembuka. `waLink()` di `lib/site.ts` menyiapkan teksnya,
-dan tiap konteks punya pesan berbeda — tombol di kartu demo menyebut industrinya,
-tombol di section AI menyebut AI agent. Anda langsung tahu pengunjung datang dari mana.
+Impor repo di Vercel. Tidak butuh environment variable.
